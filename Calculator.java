@@ -4,6 +4,8 @@ import java.util.*;
 
 class GlobalR {
        public static String[] number = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+	   public static String[] number100 = {"I","IV","V","IX","X","XL","L"};
+	   public static int[] number100A = {1,4,5,9,10,90,100};
 }
 
 
@@ -32,23 +34,68 @@ class Number
 		return false;
 		
 	}
-	public int Calc(Number nb1, char typeOperation)
+	public String IntToR(int a)
+	{
+		String str = "";
+		int indexD = 6;
+		while(a != 0)
+		{
+			int d0 = a / GlobalR.number100A[indexD];
+			if(d0 != 0)
+			{				
+				str += GlobalR.number100[indexD];
+				a = a - GlobalR.number100A[indexD];
+			}
+			else 
+				indexD--;
+			
+		}
+		return str;
+	}
+	public String Calc(Number nb1, char typeOperation)
 	{
 		if(IsR() != nb1.IsR())
 			throw new NullPointerException("number formats do not match");
-		switch(typeOperation)
+		if(!IsR())
 		{
-		case '+':
-			return _value += nb1.GetValue();
-		case '-':
-			return _value -= nb1.GetValue();
-		case '*':
-			return _value *= nb1.GetValue();
-		case '/':
-			return _value /= nb1.GetValue();
-		default:
-			throw new NullPointerException("unknow operator");
+			switch(typeOperation)
+			{
+			case '+':
+				_value += nb1.GetValue();
+				return String.valueOf(_value);
+			case '-':
+				 _value -= nb1.GetValue();
+				return String.valueOf(_value);
+			case '*':
+				_value *= nb1.GetValue();
+				return String.valueOf(_value);
+			case '/':
+				_value /= nb1.GetValue();
+				return String.valueOf(_value);
+			default:
+				throw new NullPointerException("unknow operator");
+			}
 		}
+		else 
+			{
+			switch(typeOperation)
+			{
+			case '+':
+				_value += nb1.GetValue();
+				return IntToR(_value);
+			case '-':
+				_value -= nb1.GetValue();
+				return IntToR(_value);
+			case '*':
+				_value *= nb1.GetValue();
+				return IntToR(_value);
+			case '/':
+				_value /= nb1.GetValue();
+				return IntToR(_value);
+			default:
+				throw new NullPointerException("unknow operator");
+			}
+		}	
 		
 	}
 	public int GetValue() { return _value;}
@@ -94,8 +141,8 @@ public class Calculator
 				System.out.println("nvalid input data");
 				continue;
 			}
-			int result = firstN.Calc(nextN, operatorC);
-			System.out.printf("%s = %d \n", str1, result); 
+			String result = firstN.Calc(nextN, operatorC);
+			System.out.printf("%s \n",result); 
 		}
    }
 }
